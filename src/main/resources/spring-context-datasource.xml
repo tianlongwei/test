@@ -49,6 +49,6 @@
         -->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage" value="com.loong.modules"/>
-        <property name="annotationClass" value="com.loong.modules.commons.mybatis.annotation.MybatisDao"/>
+        <property name="annotationClass" value="com.loong.commons.mybatis.annotation.MybatisDao"/>
     </bean>
 </beans>

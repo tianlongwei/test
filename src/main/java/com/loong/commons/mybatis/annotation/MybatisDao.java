@@ -1,4 +1,4 @@
-package com.loong.modules.commons.mybatis.annotation;
+package com.loong.commons.mybatis.annotation;
 
 import org.springframework.stereotype.Component;
 
