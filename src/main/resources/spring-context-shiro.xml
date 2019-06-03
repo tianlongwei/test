@@ -5,28 +5,53 @@
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
     <description>shiro与spring容器整合的配置文件</description>
 
-    <!--1、配置缓存管理-->
+    <!--
+        1、配置缓存管理器
+    -->
     <bean id="ehCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <!--配置encache的配置文件位置-->
         <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
     </bean>
-    <bean id="myRealm" class="com.loong.commons.shiro.realm.MyRealm"></bean>
-    <!---->
+    <!--
+        2、配置服务端的账户认证信息的安全获取类
+     -->
+    <bean id="myrealmDemo1" class="com.loong.commons.shiro.realm.MyrealmDemo1"></bean>
+    <!--
+        3、配置shiro与spring、web项目整合的安全管理器》》重要！！
+    -->
     <bean id="defaultWebSecurityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--注入缓存管理器-->
         <property name="cacheManager" ref="ehCacheManager"/>
-        <property name="realm" ref="myRealm"/>
+        <!--注入服务端的账户认证信息获取类-->
+        <property name="realm" ref="myrealmDemo1"/>
     </bean>
 
+    <!--
+        4、配置shiro的生命周期管理类
+    -->
     <bean id="beanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <!--
+        5、开启shiro的注解功能。只有在4配置后才有效
+    -->
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
           depends-on="beanPostProcessor"/>
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="defaultWebSecurityManager"/>
     </bean>
 
+    <!--
+        6、配置shiro权限认证的地址拦截器
+        6.1、anon 匿名访问
+        6.2、authc 需要授权访问
+        6.3、logout 登出过滤器，访问该地址则登出当前账户
+    -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="defaultWebSecurityManager"/>
+        <!--没有授权时的登录地址-->
         <property name="loginUrl" value="/login.jsp"/>
+        <!--登录成功后的地址-->
         <property name="successUrl" value="/list.jsp"/>
+        <!--未授权的地址-->
         <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
         <property name="filterChainDefinitions">
             <value>
