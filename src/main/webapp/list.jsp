@@ -12,6 +12,8 @@
 </head>
 <body>
 list
+你好<% request.getSession().getAttribute("currentUser");%>
 <a href="/logout" >登出</a>
+<a href="/toModifiedPwd">修改密码</a>
 </body>
 </html>

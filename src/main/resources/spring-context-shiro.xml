@@ -15,9 +15,14 @@
     <!--
         2、配置服务端的账户认证信息的安全获取类
      -->
-    <bean id="myrealmDemo1" class="com.loong.commons.shiro.realm.MyrealmDemo1">
+    <bean id="myrealmDemo1" class="com.loong.commons.shiro.realm.MyRealmDemo">
         <!--开启缓存配置，打开后才会在磁盘中产生相应的缓存文件》》》重要-->
         <property name="authenticationCachingEnabled" value="true"/>
+        <property name="credentialsMatcher" ref="matcher"/>
+    </bean>
+    <bean id="matcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="SHA-1"/>
+        <property name="hashIterations" value="1024"/>
     </bean>
     <!--
         3、配置shiro与spring、web项目整合的安全管理器》》重要！！
