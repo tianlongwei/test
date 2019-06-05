@@ -55,7 +55,7 @@ public class SystemController {
                 subject.login(token);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                return "redirect:login.jsp";
+//                return "redirect:login1.jsp";
             }
         }
         javax.servlet.http.HttpSession session = request.getSession();

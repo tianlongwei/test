@@ -2,6 +2,8 @@ package my.loong.mudel.system;
 
 import com.loong.commons.security.Digest;
 import org.apache.shiro.codec.Hex;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -106,11 +108,31 @@ public class TestSys {
     }
 
     @Test
+    public void testSha(){
+        byte[] salt = Digest.generateSalt();
+        System.out.println(Hex.encodeToString(salt));//8e90dfe25e97298be563c9c66a8f1967495d2b40169295b964446c4a
+    }
+
+    @Test
     public void testSAH1(){
-        byte[] bytes = Digest.SHA1("1234".getBytes(),"43c4ee598ad176da".getBytes(),1024);
+        byte[] bytes = Digest.SHA1("1234".getBytes(),Hex.decode("8e90dfe25e97298b"),1024);
         System.out.println(bytes.length);
-        System.out.println(Hex.encodeToString(bytes));
-        System.out.println("===========");//41503e345541d0b3f79e016d112282c1dbf03a96f3a5fd831ccea9e5
+        System.out.println(Hex.encodeToString(bytes));//e563c9c66a8f1967495d2b40169295b964446c4a
+        //e563c9c66a8f1967495d2b40169295b964446c4a
+        //8e90dfe25e97298b
+        System.out.println("===========");//8e90dfe25e97298be563c9c66a8f1967495d2b40169295b964446c4a
+    }
+
+    @Test
+    public void testSimhash(){
+        String algorithmName="SHA-1";
+        ByteSource source=ByteSource.Util.bytes("1234");
+        System.out.println(source);
+        ByteSource salt=ByteSource.Util.bytes(Hex.decode("8e90dfe25e97298b"));
+        System.out.println(salt);
+        int hsahIterations=1024;
+        SimpleHash hash=new SimpleHash(algorithmName,source,salt,hsahIterations);
+        System.out.println(hash);//7785e525c6ed22bcb82b0fa72df1bfa6c22aba78
     }
 
 }

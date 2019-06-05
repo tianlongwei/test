@@ -3,7 +3,7 @@ package com.loong.commons.shiro.realm;
 import com.loong.modules.system.entity.User;
 import com.loong.modules.system.service.UserService;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.codec.Hex;
 import org.apache.shiro.realm.AuthenticatingRealm;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class MyRealmDemo extends AuthenticatingRealm {
         SimpleAuthenticationInfo info=null;
         String principal=username;
         String credentials=user.getPassword().substring(16);//
-        ByteSource credentialsSalt=ByteSource.Util.bytes(user.getPassword().substring(0,16));
+        ByteSource credentialsSalt=ByteSource.Util.bytes(Hex.decode(user.getPassword().substring(0,16)));
         System.out.println(user.getPassword().substring(16));
         System.out.println(user.getPassword().substring(0,16));
         String realmName=getName();
